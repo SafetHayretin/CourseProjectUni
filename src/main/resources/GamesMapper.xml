@@ -1,0 +1,40 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Models.Game">
+
+    <resultMap id="result" type="Models.Game">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="price" column="price"/>
+        <result property="manufacturer" column="manufacturer"/>
+        <result property="releaseDate" column="release_date"/>
+        <result property="genres" column="genres"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="Models.Game" useGeneratedKeys="true">
+        INSERT INTO GAMES ( title, price, manufacturer, genres, release_date ) VALUES
+        ( #{title}, #{price}, #{manufacturer}, #{genres}, #{releaseDate} );
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select last_insert_id() as id
+        </selectKey>
+    </insert>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE from GAMES WHERE ID = #{id};
+    </delete>
+
+    <select id="getAll" resultMap="result">
+        SELECT * FROM GAMES;
+    </select>
+
+    <select id="selectById" parameterType="int" resultMap="result">
+        SELECT * FROM GAMES WHERE ID = #{id};
+    </select>
+
+    <update id="update" parameterType="Models.Game">
+        UPDATE GAMES SET title = #{title}, price = #{price}, manufacturer = #{manufacturer},
+        genres = #{genres}, release_date = #{releaseDate}  WHERE ID = #{id};
+    </update>
+</mapper>

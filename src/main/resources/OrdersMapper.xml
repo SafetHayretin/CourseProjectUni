@@ -1,0 +1,40 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Models.Order">
+
+    <resultMap id="result" type="Models.Order">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="gameId" column="id"/>
+        <result property="orderDate" column="order_Date"/>
+        <result property="quantity" column="quantity"/>
+        <result property="totalPrice" column="total_price"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="Models.Order" useGeneratedKeys="true">
+        INSERT INTO ORDERS (user_id, game_id, order_Date, quantity, total_Price) VALUES ( #{userId}, #{gameId},
+        #{orderDate}, #{quantity}, #{totalPrice});
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select last_insert_id() as id
+        </selectKey>
+    </insert>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE from ORDERS WHERE ID = #{id};
+    </delete>
+
+    <select id="getAll" resultMap="result">
+        SELECT user_id, game_id, order_Date,quantity,total_Price FROM Orders;
+    </select>
+
+    <select id="selectById" parameterType="int" resultMap="result">
+        SELECT ID, user_id, game_id, order_Date, quantity, total_Price WHERE ID = #{id};
+    </select>
+
+    <update id="update" parameterType="Models.Order">
+        UPDATE Orders SET user_id = #{userId}, game_id = #{gameId}, order_Date = #{orderDate},
+        quantity = #{quantity}, total_Price = #{totalPrice} WHERE ID = #{id};
+    </update>
+</mapper>
